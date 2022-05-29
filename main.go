@@ -106,8 +106,9 @@ func main() {
 	story.Get("/presign/:key", storyHandler.PresignURL)
 
 	friend := app.Group("/friend")
-	friend.Put("/request/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.FriendRequest)
-	friend.Put("/accept/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.AcceptFriend)
+	friend.Put("/request/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.CreateFriendRequest)
+	friend.Put("/accept/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.AcceptFriendRequest)
+	friend.Delete("/request/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.DeclineFriendRequest)
 	friend.Delete("/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.RemoveFriend)
 
 	comment := app.Group("/comment")

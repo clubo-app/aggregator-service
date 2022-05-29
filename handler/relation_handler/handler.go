@@ -14,8 +14,9 @@ type relationGatewayHandler struct {
 }
 
 type RelationGatewayHandler interface {
-	FriendRequest(c *fiber.Ctx) error
-	AcceptFriend(c *fiber.Ctx) error
+	CreateFriendRequest(c *fiber.Ctx) error
+	AcceptFriendRequest(c *fiber.Ctx) error
+	DeclineFriendRequest(c *fiber.Ctx) error
 	RemoveFriend(c *fiber.Ctx) error
 
 	FavorParty(c *fiber.Ctx) error

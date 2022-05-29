@@ -14,11 +14,11 @@ func (h partyGatewayHandler) GetPartyByUser(c *fiber.Ctx) error {
 	uId := c.Params("id")
 
 	limitStr := c.Query("limit")
-	limit, _ := strconv.ParseUint(limitStr, 10, 32)
+	limit, _ := strconv.ParseInt(limitStr, 10, 32)
 	offsetStr := c.Query("offset")
-	offset, _ := strconv.ParseUint(offsetStr, 10, 32)
+	offset, _ := strconv.ParseInt(offsetStr, 10, 32)
 
-	partyRes, err := h.pc.GetByUser(c.Context(), &party.GetByUserRequest{UserId: uId, Offset: uint32(offset), Limit: uint32(limit)})
+	partyRes, err := h.pc.GetByUser(c.Context(), &party.GetByUserRequest{UserId: uId, Offset: int32(offset), Limit: int32(limit)})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
