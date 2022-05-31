@@ -1,14 +1,14 @@
 package storyhandler
 
 import (
+	"github.com/clubo-app/protobuf/profile"
 	sc "github.com/clubo-app/protobuf/story"
-	uc "github.com/clubo-app/protobuf/user"
 	"github.com/gofiber/fiber/v2"
 )
 
 type storyGatewayHandler struct {
-	sc sc.StoryServiceClient
-	uc uc.UserServiceClient
+	sc   sc.StoryServiceClient
+	prof profile.ProfileServiceClient
 }
 
 type StoryGatewayHandler interface {
@@ -20,9 +20,9 @@ type StoryGatewayHandler interface {
 	PresignURL(c *fiber.Ctx) error
 }
 
-func NewStoryGatewayHandler(sc sc.StoryServiceClient, uc uc.UserServiceClient) StoryGatewayHandler {
+func NewStoryGatewayHandler(sc sc.StoryServiceClient, prof profile.ProfileServiceClient) StoryGatewayHandler {
 	return &storyGatewayHandler{
-		sc: sc,
-		uc: uc,
+		sc:   sc,
+		prof: prof,
 	}
 }

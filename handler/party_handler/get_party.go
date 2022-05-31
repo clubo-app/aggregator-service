@@ -6,8 +6,8 @@ import (
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/protobuf/party"
+	"github.com/clubo-app/protobuf/profile"
 	sg "github.com/clubo-app/protobuf/story"
-	ug "github.com/clubo-app/protobuf/user"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -20,7 +20,7 @@ func (h partyGatewayHandler) GetParty(c *fiber.Ctx) error {
 	}
 	log.Printf("Party: %v", p)
 
-	profileRes, _ := h.uc.GetProfile(c.Context(), &ug.GetProfileRequest{Id: p.UserId})
+	profileRes, _ := h.prof.GetProfile(c.Context(), &profile.GetProfileRequest{Id: p.UserId})
 	log.Printf("Profile: %v", profileRes)
 
 	storyRes, _ := h.sc.GetByParty(c.Context(), &sg.GetByPartyRequest{PartyId: p.Id})

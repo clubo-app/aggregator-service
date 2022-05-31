@@ -2,13 +2,13 @@ package datastruct
 
 import (
 	pg "github.com/clubo-app/protobuf/party"
+	"github.com/clubo-app/protobuf/profile"
 	sg "github.com/clubo-app/protobuf/story"
-	ug "github.com/clubo-app/protobuf/user"
 )
 
 type AggregatedParty struct {
 	Id            string            `json:"id,omitempty"`
-	Creator       *ug.Profile       `json:"creator,omitempty"`
+	Creator       *profile.Profile  `json:"creator,omitempty"`
 	Title         string            `json:"title,omitempty"`
 	IsPublic      bool              `json:"is_public,omitempty"`
 	Lat           float32           `json:"lat,omitempty"`
@@ -33,9 +33,9 @@ type AggregatedFavoriteParty struct {
 }
 
 type AggregatedFavorisingUsers struct {
-	User        *ug.Profile `json:"user"`
-	PartyId     string      `json:"party_id"`
-	FavoritedAt string      `json:"favorited_at"`
+	User        *profile.Profile `json:"user"`
+	PartyId     string           `json:"party_id"`
+	FavoritedAt string           `json:"favorited_at"`
 }
 
 type PagedAggregatedFavoriteParty struct {

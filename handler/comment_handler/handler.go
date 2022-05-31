@@ -2,13 +2,13 @@ package commenthandler
 
 import (
 	cg "github.com/clubo-app/protobuf/comment"
-	uc "github.com/clubo-app/protobuf/user"
+	"github.com/clubo-app/protobuf/profile"
 	"github.com/gofiber/fiber/v2"
 )
 
 type commentGatewayHandler struct {
-	cc cg.CommentServiceClient
-	uc uc.UserServiceClient
+	cc   cg.CommentServiceClient
+	prof profile.ProfileServiceClient
 }
 
 type CommentGatewayHandler interface {
@@ -20,9 +20,9 @@ type CommentGatewayHandler interface {
 	GetReplyByComment(c *fiber.Ctx) error
 }
 
-func NewCommentGatewayHandler(cc cg.CommentServiceClient, uc uc.UserServiceClient) CommentGatewayHandler {
+func NewCommentGatewayHandler(cc cg.CommentServiceClient, prof profile.ProfileServiceClient) CommentGatewayHandler {
 	return &commentGatewayHandler{
-		cc: cc,
-		uc: uc,
+		cc:   cc,
+		prof: prof,
 	}
 }

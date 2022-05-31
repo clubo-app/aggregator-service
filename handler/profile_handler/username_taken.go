@@ -2,7 +2,7 @@ package profilehandler
 
 import (
 	"github.com/clubo-app/packages/utils"
-	ug "github.com/clubo-app/protobuf/user"
+	"github.com/clubo-app/protobuf/profile"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -10,10 +10,10 @@ type UsernameTakenResponse struct {
 	Taken bool `json:"taken"`
 }
 
-func (h userGatewayHandler) UsernameTaken(c *fiber.Ctx) error {
+func (h profileGatewayHandler) UsernameTaken(c *fiber.Ctx) error {
 	uName := c.Params("username")
 
-	res, err := h.uc.UsernameTaken(c.Context(), &ug.UsernameTakenRequest{Username: uName})
+	res, err := h.pc.UsernameTaken(c.Context(), &profile.UsernameTakenRequest{Username: uName})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}

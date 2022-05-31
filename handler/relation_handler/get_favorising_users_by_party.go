@@ -3,8 +3,8 @@ package relationhandler
 import (
 	"strconv"
 
+	"github.com/clubo-app/protobuf/profile"
 	rg "github.com/clubo-app/protobuf/relation"
-	"github.com/clubo-app/protobuf/user"
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/clubo-app/aggregator-service/datastruct"
@@ -28,7 +28,7 @@ func (h relationGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 		userIds = append(userIds, fp.UserId)
 	}
 
-	pRes, _ := h.uc.GetManyProfilesMap(c.Context(), &user.GetManyProfilesRequest{Ids: userIds})
+	pRes, _ := h.prof.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: userIds})
 
 	aggFP := make([]datastruct.AggregatedFavorisingUsers, len(fpRes.FavoriteParties))
 	for i, fp := range fpRes.FavoriteParties {

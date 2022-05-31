@@ -5,7 +5,7 @@ import (
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/packages/utils/middleware"
 	pg "github.com/clubo-app/protobuf/party"
-	ug "github.com/clubo-app/protobuf/user"
+	"github.com/clubo-app/protobuf/profile"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -23,7 +23,7 @@ func (h partyGatewayHandler) CreateParty(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	profileRes, _ := h.uc.GetProfile(c.Context(), &ug.GetProfileRequest{Id: p.UserId})
+	profileRes, _ := h.prof.GetProfile(c.Context(), &profile.GetProfileRequest{Id: p.UserId})
 
 	res := datastruct.AggregatedParty{
 		Id:            p.Id,

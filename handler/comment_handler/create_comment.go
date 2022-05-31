@@ -5,7 +5,7 @@ import (
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/packages/utils/middleware"
 	cg "github.com/clubo-app/protobuf/comment"
-	ug "github.com/clubo-app/protobuf/user"
+	"github.com/clubo-app/protobuf/profile"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -26,7 +26,7 @@ func (h commentGatewayHandler) CreateComment(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	profileRes, _ := h.uc.GetProfile(c.Context(), &ug.GetProfileRequest{Id: co.AuthorId})
+	profileRes, _ := h.prof.GetProfile(c.Context(), &profile.GetProfileRequest{Id: co.AuthorId})
 
 	ac := datastruct.AggregatedComment{
 		Id:        co.Id,

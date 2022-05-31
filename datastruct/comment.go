@@ -1,13 +1,15 @@
 package datastruct
 
-import ug "github.com/clubo-app/protobuf/user"
+import (
+	"github.com/clubo-app/protobuf/profile"
+)
 
 type AggregatedComment struct {
-	Id        string      `json:"id"`
-	PartyId   string      `json:"party_id"`
-	Author    *ug.Profile `json:"author,omitempty"`
-	Body      string      `json:"body"`
-	CreatedAt string      `json:"created_at"`
+	Id        string           `json:"id"`
+	PartyId   string           `json:"party_id"`
+	Author    *profile.Profile `json:"author,omitempty"`
+	Body      string           `json:"body"`
+	CreatedAt string           `json:"created_at"`
 }
 
 type PagedAggregatedComment struct {
@@ -16,11 +18,11 @@ type PagedAggregatedComment struct {
 }
 
 type AggregatedReply struct {
-	Id        string      `json:"id"`
-	CommentId string      `json:"comment_id"`
-	Author    *ug.Profile `json:"author,omitempty"`
-	Body      string      `json:"body"`
-	CreatedAt string      `json:"created_at"`
+	Id        string           `json:"id"`
+	CommentId string           `json:"comment_id"`
+	Author    *profile.Profile `json:"author,omitempty"`
+	Body      string           `json:"body"`
+	CreatedAt string           `json:"created_at"`
 }
 
 type PagedAggregatedReply struct {

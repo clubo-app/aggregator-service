@@ -8,15 +8,16 @@ import (
 	authhandler "github.com/clubo-app/aggregator-service/handler/auth_handler"
 	commenthandler "github.com/clubo-app/aggregator-service/handler/comment_handler"
 	partyhandler "github.com/clubo-app/aggregator-service/handler/party_handler"
+	profilehandler "github.com/clubo-app/aggregator-service/handler/profile_handler"
 	relationhandler "github.com/clubo-app/aggregator-service/handler/relation_handler"
 	storyhandler "github.com/clubo-app/aggregator-service/handler/story_handler"
-	userhandler "github.com/clubo-app/aggregator-service/handler/user_handler"
 	"github.com/clubo-app/packages/utils/middleware"
+	ag "github.com/clubo-app/protobuf/auth"
 	cg "github.com/clubo-app/protobuf/comment"
 	pg "github.com/clubo-app/protobuf/party"
+	prof "github.com/clubo-app/protobuf/profile"
 	rg "github.com/clubo-app/protobuf/relation"
 	sg "github.com/clubo-app/protobuf/story"
-	ug "github.com/clubo-app/protobuf/user"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
@@ -28,9 +29,13 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	uc, err := ug.NewClient(c.USER_SERVICE_ADDRESS)
+	prof, err := prof.NewClient(c.PROFILE_SERVICE_ADDRESS)
 	if err != nil {
-		log.Fatalf("did not connect to user service: %v", err)
+		log.Fatalf("did not connect to profile service: %v", err)
+	}
+	ac, err := ag.NewClient(c.AUTH_SERVICE_ADDRESS)
+	if err != nil {
+		log.Fatalf("did not connect to auth service: %v", err)
 	}
 	pc, err := pg.NewClient(c.PARTY_SERVICE_ADDRESS)
 	if err != nil {
@@ -49,12 +54,12 @@ func main() {
 		log.Fatalf("did not connect to comment service: %v", err)
 	}
 
-	authHandler := authhandler.NewAuthGatewayHandler(uc)
-	userHandler := userhandler.NewUserGatewayHandler(uc, rc)
-	partyHandler := partyhandler.NewPartyGatewayHandler(pc, uc, sc)
-	storyHandler := storyhandler.NewStoryGatewayHandler(sc, uc)
-	relationHandler := relationhandler.NewRelationGatewayHandler(rc, pc, uc)
-	commentHandler := commenthandler.NewCommentGatewayHandler(cc, uc)
+	authHandler := authhandler.NewAuthGatewayHandler(ac, prof)
+	profileHandler := profilehandler.NewUserGatewayHandler(prof, rc, ac)
+	partyHandler := partyhandler.NewPartyGatewayHandler(pc, prof, sc)
+	storyHandler := storyhandler.NewStoryGatewayHandler(sc, prof)
+	relationHandler := relationhandler.NewRelationGatewayHandler(rc, pc, prof)
+	commentHandler := commenthandler.NewCommentGatewayHandler(cc, prof)
 
 	app := fiber.New(fiber.Config{
 		ErrorHandler: func(ctx *fiber.Ctx, err error) error {
@@ -79,12 +84,10 @@ func main() {
 	auth.Post("/google-login", authHandler.GoogleLogin)
 
 	profile := app.Group("/profile")
-	profile.Get("/:id", middleware.AuthOptional(c.TOKEN_SECRET), userHandler.GetProfile)
-	profile.Get("/username-taken/:username", userHandler.UsernameTaken)
-
-	user := app.Group("/user")
-	user.Patch("/", middleware.AuthRequired(c.TOKEN_SECRET), userHandler.UpdateUser)
-	user.Get("/me", middleware.AuthRequired(c.TOKEN_SECRET), userHandler.GetMe)
+	profile.Patch("/", middleware.AuthRequired(c.TOKEN_SECRET), profileHandler.UpdateUser)
+	profile.Get("/me", middleware.AuthRequired(c.TOKEN_SECRET), profileHandler.GetMe)
+	profile.Get("/:id", middleware.AuthOptional(c.TOKEN_SECRET), profileHandler.GetProfile)
+	profile.Get("/username-taken/:username", profileHandler.UsernameTaken)
 
 	party := app.Group("/party")
 	party.Post("/", middleware.AuthRequired(c.TOKEN_SECRET), partyHandler.CreateParty)

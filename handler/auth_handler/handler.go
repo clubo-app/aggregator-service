@@ -1,12 +1,14 @@
 package authhandler
 
 import (
-	ug "github.com/clubo-app/protobuf/user"
+	ag "github.com/clubo-app/protobuf/auth"
+	pg "github.com/clubo-app/protobuf/profile"
 	"github.com/gofiber/fiber/v2"
 )
 
 type authGatewayHandler struct {
-	uc ug.UserServiceClient
+	ac ag.AuthServiceClient
+	pc pg.ProfileServiceClient
 }
 
 type AuthGatewayHandler interface {
@@ -16,8 +18,9 @@ type AuthGatewayHandler interface {
 	VerifyEmail(c *fiber.Ctx) error
 }
 
-func NewAuthGatewayHandler(uc ug.UserServiceClient) AuthGatewayHandler {
+func NewAuthGatewayHandler(ac ag.AuthServiceClient, pc pg.ProfileServiceClient) AuthGatewayHandler {
 	return &authGatewayHandler{
-		uc: uc,
+		ac: ac,
+		pc: pc,
 	}
 }

@@ -1,21 +1,21 @@
 package profilehandler
 
 import (
-	"log"
-
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/packages/utils/middleware"
+	pg "github.com/clubo-app/protobuf/profile"
 	rg "github.com/clubo-app/protobuf/relation"
-	ug "github.com/clubo-app/protobuf/user"
 	"github.com/gofiber/fiber/v2"
 )
 
-func (h userGatewayHandler) GetProfile(c *fiber.Ctx) error {
+func (h profileGatewayHandler) GetProfile(c *fiber.Ctx) error {
 	id := c.Params("id")
 	user := middleware.ParseUser(c)
 
-	profile, err := h.uc.GetProfile(c.Context(), &ug.GetProfileRequest{Id: id})
+	profile, err := h.pc.GetProfile(c.Context(), &pg.GetProfileRequest{
+		Id: id,
+	})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
@@ -41,20 +41,18 @@ func (h userGatewayHandler) GetProfile(c *fiber.Ctx) error {
 		FriendCount: friendCountRes.FriendCount,
 	}
 
-	log.Println(relation)
-
 	if relation != nil {
-		st := datastruct.FriendshipStatus{}
+		fs := datastruct.FriendshipStatus{}
 
 		if relation.Accepted {
-			st.IsFriend = true
-			st.AcceptedAt = relation.AcceptedAt
+			fs.IsFriend = true
+			fs.AcceptedAt = relation.AcceptedAt
 		} else {
-			st.OutgoingRequest = true
-			st.RequestedAt = relation.RequestedAt
+			fs.OutgoingRequest = true
+			fs.RequestedAt = relation.RequestedAt
 		}
 
-		res.FriendshipStatus = st
+		res.FriendshipStatus = fs
 	}
 
 	return c.Status(fiber.StatusOK).JSON(res)

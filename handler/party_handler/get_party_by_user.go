@@ -6,7 +6,7 @@ import (
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/protobuf/party"
-	ug "github.com/clubo-app/protobuf/user"
+	"github.com/clubo-app/protobuf/profile"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -24,7 +24,7 @@ func (h partyGatewayHandler) GetPartyByUser(c *fiber.Ctx) error {
 	}
 
 	// get the profile of the party creator
-	profilesRes, _ := h.uc.GetProfile(c.Context(), &ug.GetProfileRequest{Id: uId})
+	profilesRes, _ := h.prof.GetProfile(c.Context(), &profile.GetProfileRequest{Id: uId})
 
 	aggP := make([]datastruct.AggregatedParty, len(partyRes.Parties))
 	for i, p := range partyRes.Parties {

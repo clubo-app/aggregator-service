@@ -6,8 +6,7 @@ import (
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	cg "github.com/clubo-app/protobuf/comment"
-	"github.com/clubo-app/protobuf/user"
-	ug "github.com/clubo-app/protobuf/user"
+	"github.com/clubo-app/protobuf/profile"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -28,26 +27,16 @@ func (h commentGatewayHandler) GetReplyByComment(c *fiber.Ctx) error {
 		replyAuthors = append(replyAuthors, r.AuthorId)
 	}
 
-	ps, _ := h.uc.GetManyProfilesMap(c.Context(), &ug.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(replyAuthors)})
+	ps, _ := h.prof.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(replyAuthors)})
 
 	aggR := make([]datastruct.AggregatedReply, len(rs.Replies))
 	for i, r := range rs.Replies {
-		if author, ok := ps.Profiles[r.AuthorId]; ok {
-			aggR[i] = datastruct.AggregatedReply{
-				Id:        r.Id,
-				CommentId: r.CommentId,
-				Author:    author,
-				Body:      r.Body,
-				CreatedAt: r.CreatedAt,
-			}
-		} else {
-			aggR[i] = datastruct.AggregatedReply{
-				Id:        r.Id,
-				CommentId: r.CommentId,
-				Author:    &user.Profile{},
-				Body:      r.Body,
-				CreatedAt: r.CreatedAt,
-			}
+		aggR[i] = datastruct.AggregatedReply{
+			Id:        r.Id,
+			CommentId: r.CommentId,
+			Author:    ps.Profiles[r.AuthorId],
+			Body:      r.Body,
+			CreatedAt: r.CreatedAt,
 		}
 	}
 
