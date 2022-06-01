@@ -2,6 +2,7 @@ package relationhandler
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
@@ -34,7 +35,7 @@ func (h *relationGatewayHandler) GetFavoritePartiesByUser(c *fiber.Ctx) error {
 		aggFP[i] = datastruct.AggregatedFavoriteParty{
 			UserId:      fp.UserId,
 			Party:       pRes.Parties[fp.PartyId],
-			FavoritedAt: fp.FavoritedAt,
+			FavoritedAt: fp.FavoritedAt.AsTime().UTC().Format(time.RFC3339),
 		}
 	}
 

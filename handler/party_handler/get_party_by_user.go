@@ -2,6 +2,7 @@ package partyhandler
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
@@ -41,8 +42,8 @@ func (h partyGatewayHandler) GetPartyByUser(c *fiber.Ctx) error {
 			Country:       p.Country,
 			// TODO: we might want to fetch some stories of the party but would have to do this for all party returned of this user
 			// Stories:
-			StartDate: p.StartDate,
-			CreatedAt: p.CreatedAt,
+			StartDate: p.StartDate.AsTime().UTC().Format(time.RFC3339),
+			CreatedAt: p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
 		}
 	}
 

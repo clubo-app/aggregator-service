@@ -1,6 +1,8 @@
 package storyhandler
 
 import (
+	"time"
+
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/protobuf/profile"
@@ -47,7 +49,7 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 		Long:          s.Long,
 		Url:           s.Url,
 		TaggedFriends: fs,
-		CreatedAt:     s.CreatedAt,
+		CreatedAt:     s.CreatedAt.AsTime().UTC().Format(time.RFC3339),
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(res)

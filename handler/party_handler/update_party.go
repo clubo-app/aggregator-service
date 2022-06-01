@@ -1,6 +1,8 @@
 package partyhandler
 
 import (
+	"time"
+
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/packages/utils/middleware"
@@ -46,8 +48,8 @@ func (h partyGatewayHandler) UpdateParty(c *fiber.Ctx) error {
 		State:         p.State,
 		Country:       p.Country,
 		Stories:       storyRes.Stories,
-		StartDate:     p.StartDate,
-		CreatedAt:     p.CreatedAt,
+		StartDate:     p.StartDate.AsTime().UTC().Format(time.RFC3339),
+		CreatedAt:     p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
 	}
 
 	return c.Status(fiber.StatusOK).JSON(res)

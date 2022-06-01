@@ -2,6 +2,7 @@ package relationhandler
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/clubo-app/protobuf/profile"
 	rg "github.com/clubo-app/protobuf/relation"
@@ -35,7 +36,7 @@ func (h relationGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 		aggFP[i] = datastruct.AggregatedFavorisingUsers{
 			User:        pRes.Profiles[fp.UserId],
 			PartyId:     fp.PartyId,
-			FavoritedAt: fp.FavoritedAt,
+			FavoritedAt: fp.FavoritedAt.AsTime().UTC().Format(time.RFC3339),
 		}
 	}
 
