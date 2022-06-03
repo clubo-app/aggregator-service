@@ -1,7 +1,6 @@
 package partyhandler
 
 import (
-	"log"
 	"time"
 
 	"github.com/clubo-app/aggregator-service/datastruct"
@@ -19,10 +18,8 @@ func (h partyGatewayHandler) GetParty(c *fiber.Ctx) error {
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
-	log.Printf("Party: %v", p)
 
 	profileRes, _ := h.prof.GetProfile(c.Context(), &profile.GetProfileRequest{Id: p.UserId})
-	log.Printf("Profile: %v", profileRes)
 
 	storyRes, _ := h.sc.GetByParty(c.Context(), &sg.GetByPartyRequest{PartyId: p.Id})
 
@@ -34,6 +31,7 @@ func (h partyGatewayHandler) GetParty(c *fiber.Ctx) error {
 		Lat:           p.Lat,
 		Long:          p.Long,
 		StreetAddress: p.StreetAddress,
+		Stories:       []*sg.PublicStory{},
 		PostalCode:    p.PostalCode,
 		State:         p.State,
 		Country:       p.Country,

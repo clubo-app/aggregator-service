@@ -17,7 +17,7 @@ type AggregatedParty struct {
 	PostalCode    string            `json:"postal_code,omitempty"`
 	State         string            `json:"state,omitempty"`
 	Country       string            `json:"country,omitempty"`
-	Stories       []*sg.PublicStory `json:"stories,omitempty"`
+	Stories       []*sg.PublicStory `json:"stories"`
 	StartDate     string            `json:"start_date,omitempty"`
 	CreatedAt     string            `json:"created_at,omitempty"`
 }

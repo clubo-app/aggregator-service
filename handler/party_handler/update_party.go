@@ -47,9 +47,12 @@ func (h partyGatewayHandler) UpdateParty(c *fiber.Ctx) error {
 		PostalCode:    p.PostalCode,
 		State:         p.State,
 		Country:       p.Country,
-		Stories:       storyRes.Stories,
+		Stories:       []*sg.PublicStory{},
 		StartDate:     p.StartDate.AsTime().UTC().Format(time.RFC3339),
 		CreatedAt:     p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
+	}
+	if storyRes != nil {
+		res.Stories = storyRes.Stories
 	}
 
 	return c.Status(fiber.StatusOK).JSON(res)
