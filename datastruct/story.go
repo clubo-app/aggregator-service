@@ -6,8 +6,6 @@ type AggregatedStory struct {
 	Id            string             `json:"id,omitempty"`
 	PartyId       string             `json:"party_id,omitempty"`
 	Creator       *profile.Profile   `json:"creator,omitempty"`
-	Lat           float32            `json:"lat,omitempty"`
-	Long          float32            `json:"long,omitempty"`
 	Url           string             `json:"url,omitempty"`
 	TaggedFriends []*profile.Profile `json:"tagged_friends,omitempty"`
 	CreatedAt     string             `json:"created_at,omitempty"`

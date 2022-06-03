@@ -47,7 +47,7 @@ func (h partyGatewayHandler) UpdateParty(c *fiber.Ctx) error {
 		PostalCode:    p.PostalCode,
 		State:         p.State,
 		Country:       p.Country,
-		Stories:       []*sg.PublicStory{},
+		Stories:       []*sg.Story{},
 		StartDate:     p.StartDate.AsTime().UTC().Format(time.RFC3339),
 		CreatedAt:     p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
 	}

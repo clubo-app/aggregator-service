@@ -61,7 +61,7 @@ func (h partyGatewayHandler) CreateParty(c *fiber.Ctx) error {
 		Lat:           p.Lat,
 		Long:          p.Long,
 		StreetAddress: p.StreetAddress,
-		Stories:       []*sg.PublicStory{},
+		Stories:       []*sg.Story{},
 		PostalCode:    p.PostalCode,
 		State:         p.State,
 		Country:       p.Country,

@@ -4,9 +4,10 @@ go 1.18
 
 require (
 	github.com/clubo-app/packages v0.0.0-20220527175458-6c8e7d7935c9
-	github.com/clubo-app/protobuf v0.0.0-20220601172316-8dde70f4bcaa
+	github.com/clubo-app/protobuf v0.0.0-20220603194354-7970c7a3343c
 	github.com/gofiber/fiber/v2 v2.34.0
 	github.com/spf13/viper v1.12.0
+	google.golang.org/protobuf v1.28.0
 )
 
 require (
@@ -45,7 +46,6 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220519153652-3a47de7e79bd // indirect
 	google.golang.org/grpc v1.46.2 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0 // indirect

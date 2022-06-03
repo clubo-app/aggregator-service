@@ -42,7 +42,7 @@ func (h partyGatewayHandler) GetPartyByUser(c *fiber.Ctx) error {
 			State:         p.State,
 			Country:       p.Country,
 			// TODO: we might want to fetch some stories of the party but would have to do this for all party returned of this user
-			Stories:   []*sg.PublicStory{},
+			Stories:   []*sg.Story{},
 			StartDate: p.StartDate.AsTime().UTC().Format(time.RFC3339),
 			CreatedAt: p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
 		}

@@ -42,8 +42,6 @@ func (h storyGatewayHandler) GetStory(c *fiber.Ctx) error {
 		Id:            s.Id,
 		PartyId:       s.PartyId,
 		Creator:       profile,
-		Lat:           s.Lat,
-		Long:          s.Long,
 		Url:           s.Url,
 		TaggedFriends: fs,
 		CreatedAt:     s.CreatedAt.AsTime().UTC().Format(time.RFC3339),

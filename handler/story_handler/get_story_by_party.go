@@ -10,12 +10,13 @@ import (
 
 func (h storyGatewayHandler) GetStoryByParty(c *fiber.Ctx) error {
 	pId := c.Params("id")
-	nextPage := c.Query("nextPage")
 
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
+	offsetStr := c.Query("offset")
+	offset, _ := strconv.ParseInt(offsetStr, 10, 32)
 
-	res, err := h.sc.GetByParty(c.Context(), &story.GetByPartyRequest{PartyId: pId, NextPage: nextPage, Limit: uint32(limit)})
+	res, err := h.sc.GetByParty(c.Context(), &story.GetByPartyRequest{PartyId: pId, Offset: int32(offset), Limit: int32(limit)})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}

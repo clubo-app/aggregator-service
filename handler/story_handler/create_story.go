@@ -24,10 +24,7 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 	// Get all profiles of the tagged people and the story creator in one call
 	ids := append(s.TaggedFriends, s.UserId)
 
-	profilesRes, err := h.prof.GetManyProfiles(c.Context(), &profile.GetManyProfilesRequest{Ids: ids})
-	if err != nil {
-		return utils.ToHTTPError(err)
-	}
+	profilesRes, _ := h.prof.GetManyProfiles(c.Context(), &profile.GetManyProfilesRequest{Ids: ids})
 
 	// Remove the creator of the story from the returned array and create a filtered list with only the profiles of the tagged people.
 	// Separately store the profile of the creator of the story
@@ -45,8 +42,6 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 		Id:            s.Id,
 		PartyId:       s.PartyId,
 		Creator:       p,
-		Lat:           s.Lat,
-		Long:          s.Long,
 		Url:           s.Url,
 		TaggedFriends: fs,
 		CreatedAt:     s.CreatedAt.AsTime().UTC().Format(time.RFC3339),
