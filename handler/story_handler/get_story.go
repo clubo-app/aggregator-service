@@ -21,7 +21,7 @@ func (h storyGatewayHandler) GetStory(c *fiber.Ctx) error {
 	// Get all profiles of the tagged people and the story creator in one call
 	ids := append(s.TaggedFriends, s.UserId)
 
-	profilesRes, err := h.prof.GetManyProfiles(c.Context(), &pg.GetManyProfilesRequest{Ids: ids})
+	profilesRes, err := h.prf.GetManyProfiles(c.Context(), &pg.GetManyProfilesRequest{Ids: ids})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}

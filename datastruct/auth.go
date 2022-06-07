@@ -1,9 +1,17 @@
 package datastruct
 
+import (
+	ag "github.com/clubo-app/protobuf/auth"
+)
+
 type AggregatedAccount struct {
 	Id      string            `json:"id"`
 	Profile AggregatedProfile `json:"profile"`
 	Email   string            `json:"email"`
-	Type    string            `json:"type,omitempty"`
-	Role    string            `json:"role,omitempty"`
+	Type    ag.Type           `json:"type,omitempty"`
+}
+
+type LoginResponse struct {
+	Token   string
+	Account AggregatedAccount
 }

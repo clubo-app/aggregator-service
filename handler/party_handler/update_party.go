@@ -20,13 +20,14 @@ func (h partyGatewayHandler) UpdateParty(c *fiber.Ctx) error {
 
 	user := middleware.ParseUser(c)
 	req.RequesterId = user.Sub
+	req.PartyId = c.Params("id")
 
 	p, err := h.pc.UpdateParty(c.Context(), req)
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
 
-	profileRes, err := h.prof.GetProfile(c.Context(), &profile.GetProfileRequest{Id: p.UserId})
+	profileRes, err := h.prf.GetProfile(c.Context(), &profile.GetProfileRequest{Id: p.UserId})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}

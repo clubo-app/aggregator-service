@@ -8,9 +8,9 @@ import (
 )
 
 type partyGatewayHandler struct {
-	pc   party.PartyServiceClient
-	prof profile.ProfileServiceClient
-	sc   story.StoryServiceClient
+	pc  party.PartyServiceClient
+	prf profile.ProfileServiceClient
+	sc  story.StoryServiceClient
 }
 
 type PartyGatewayHandler interface {
@@ -21,10 +21,10 @@ type PartyGatewayHandler interface {
 	GetPartyByUser(c *fiber.Ctx) error
 }
 
-func NewPartyGatewayHandler(pc party.PartyServiceClient, prof profile.ProfileServiceClient, sc story.StoryServiceClient) PartyGatewayHandler {
+func NewPartyGatewayHandler(pc party.PartyServiceClient, prf profile.ProfileServiceClient, sc story.StoryServiceClient) PartyGatewayHandler {
 	return &partyGatewayHandler{
-		pc:   pc,
-		prof: prof,
-		sc:   sc,
+		pc:  pc,
+		prf: prf,
+		sc:  sc,
 	}
 }

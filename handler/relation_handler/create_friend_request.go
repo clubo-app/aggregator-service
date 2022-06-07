@@ -1,9 +1,6 @@
 package relationhandler
 
 import (
-	"log"
-	"strings"
-
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/packages/utils/middleware"
 	"github.com/clubo-app/protobuf/relation"
@@ -14,7 +11,6 @@ func (h relationGatewayHandler) CreateFriendRequest(c *fiber.Ctx) error {
 	user := middleware.ParseUser(c)
 
 	fId := c.Params("id")
-	log.Println(strings.TrimSpace(fId))
 
 	if user.Sub == fId {
 		return fiber.NewError(fiber.StatusBadRequest, "You can't add yourself")

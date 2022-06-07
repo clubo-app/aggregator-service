@@ -69,8 +69,7 @@ func (h profileGatewayHandler) UpdateUser(c *fiber.Ctx) error {
 			FriendCount: friendCountRes.FriendCount,
 		},
 		Email: a.Email,
-		Type:  a.Type.String(),
-		Role:  a.Role.String(),
+		Type:  a.Type,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(res)

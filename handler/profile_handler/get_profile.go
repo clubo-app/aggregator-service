@@ -35,12 +35,15 @@ func (h profileGatewayHandler) GetProfile(c *fiber.Ctx) error {
 	friendCountRes, _ := h.rc.GetFriendCount(c.Context(), &rg.GetFriendCountRequest{UserId: profile.Id})
 
 	res := datastruct.AggregatedProfile{
-		Id:          profile.Id,
-		Username:    profile.Username,
-		Firstname:   profile.Firstname,
-		Lastname:    profile.Lastname,
-		Avatar:      profile.Avatar,
-		FriendCount: friendCountRes.FriendCount,
+		Id:        profile.Id,
+		Username:  profile.Username,
+		Firstname: profile.Firstname,
+		Lastname:  profile.Lastname,
+		Avatar:    profile.Avatar,
+	}
+
+	if friendCountRes != nil {
+		res.FriendCount = friendCountRes.FriendCount
 	}
 
 	if relation != nil {

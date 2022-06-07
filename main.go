@@ -15,7 +15,7 @@ import (
 	ag "github.com/clubo-app/protobuf/auth"
 	cg "github.com/clubo-app/protobuf/comment"
 	pg "github.com/clubo-app/protobuf/party"
-	prof "github.com/clubo-app/protobuf/profile"
+	prf "github.com/clubo-app/protobuf/profile"
 	rg "github.com/clubo-app/protobuf/relation"
 	sg "github.com/clubo-app/protobuf/story"
 	"github.com/gofiber/fiber/v2"
@@ -29,7 +29,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	prof, err := prof.NewClient(c.PROFILE_SERVICE_ADDRESS)
+	prf, err := prf.NewClient(c.PROFILE_SERVICE_ADDRESS)
 	if err != nil {
 		log.Fatalf("did not connect to profile service: %v", err)
 	}
@@ -54,12 +54,12 @@ func main() {
 		log.Fatalf("did not connect to comment service: %v", err)
 	}
 
-	authHandler := authhandler.NewAuthGatewayHandler(ac, prof)
-	profileHandler := profilehandler.NewUserGatewayHandler(prof, rc, ac)
-	partyHandler := partyhandler.NewPartyGatewayHandler(pc, prof, sc)
-	storyHandler := storyhandler.NewStoryGatewayHandler(sc, prof)
-	relationHandler := relationhandler.NewRelationGatewayHandler(rc, pc, prof)
-	commentHandler := commenthandler.NewCommentGatewayHandler(cc, prof)
+	authHandler := authhandler.NewAuthGatewayHandler(ac, prf)
+	profileHandler := profilehandler.NewUserGatewayHandler(prf, rc, ac)
+	partyHandler := partyhandler.NewPartyGatewayHandler(pc, prf, sc)
+	storyHandler := storyhandler.NewStoryGatewayHandler(sc, prf)
+	relationHandler := relationhandler.NewRelationGatewayHandler(rc, pc, prf)
+	commentHandler := commenthandler.NewCommentGatewayHandler(cc, prf)
 
 	app := fiber.New(fiber.Config{
 		ErrorHandler: func(ctx *fiber.Ctx, err error) error {
@@ -94,14 +94,14 @@ func main() {
 	party.Delete("/:id", middleware.AuthRequired(c.TOKEN_SECRET), partyHandler.DeleteParty)
 	party.Get("/:id", partyHandler.GetParty)
 	party.Get("/user/:id", partyHandler.GetPartyByUser)
-	party.Patch("/", middleware.AuthRequired(c.TOKEN_SECRET), partyHandler.UpdateParty)
+	party.Patch("/:id", middleware.AuthRequired(c.TOKEN_SECRET), partyHandler.UpdateParty)
 
 	party.Put("/favorite/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.FavorParty)
 	party.Get("/favorite/user/:id", relationHandler.GetFavoritePartiesByUser)
 	party.Get("/:id/favorite/user", relationHandler.GetFavorisingUsersByParty)
 
 	story := app.Group("/story")
-	story.Post("/", storyHandler.CreateStory)
+	story.Post("/", middleware.AuthRequired(c.TOKEN_SECRET), storyHandler.CreateStory)
 	story.Delete("/:id", storyHandler.DeleteStory)
 	story.Get("/:id", storyHandler.GetStory)
 	story.Get("/party/:id", storyHandler.GetStoryByParty)

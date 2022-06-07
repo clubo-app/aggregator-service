@@ -26,7 +26,7 @@ func (h commentGatewayHandler) CreateReply(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	profileRes, _ := h.prof.GetProfile(c.Context(), &profile.GetProfileRequest{Id: r.AuthorId})
+	profileRes, _ := h.prf.GetProfile(c.Context(), &profile.GetProfileRequest{Id: r.AuthorId})
 
 	ar := datastruct.AggregatedReply{
 		Id:        r.Id,

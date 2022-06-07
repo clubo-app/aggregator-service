@@ -17,7 +17,7 @@ func (h commentGatewayHandler) GetReplyByComment(c *fiber.Ctx) error {
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
 
-	rs, err := h.cc.GetReplyByComment(c.Context(), &cg.GetReplyByCommentRequest{CommentId: cId, NextPage: nextPage, Limit: uint32(limit)})
+	rs, err := h.cc.GetReplyByComment(c.Context(), &cg.GetReplyByCommentRequest{CommentId: cId, NextPage: nextPage, Limit: limit})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
@@ -27,7 +27,7 @@ func (h commentGatewayHandler) GetReplyByComment(c *fiber.Ctx) error {
 		replyAuthors = append(replyAuthors, r.AuthorId)
 	}
 
-	ps, _ := h.prof.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(replyAuthors)})
+	ps, _ := h.prf.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(replyAuthors)})
 
 	aggR := make([]datastruct.AggregatedReply, len(rs.Replies))
 	for i, r := range rs.Replies {

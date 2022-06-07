@@ -19,7 +19,7 @@ func (h relationGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
 
-	fpRes, err := h.rc.GetFavorisingUsersByParty(c.Context(), &rg.GetFavorisingUsersByPartyRequest{PartyId: pId, NextPage: nextPage, Limit: uint32(limit)})
+	fpRes, err := h.rc.GetFavorisingUsersByParty(c.Context(), &rg.GetFavorisingUsersByPartyRequest{PartyId: pId, NextPage: nextPage, Limit: limit})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
@@ -29,7 +29,7 @@ func (h relationGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 		userIds = append(userIds, fp.UserId)
 	}
 
-	pRes, _ := h.prof.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: userIds})
+	pRes, _ := h.prf.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: userIds})
 
 	aggFP := make([]datastruct.AggregatedFavorisingUsers, len(fpRes.FavoriteParties))
 	for i, fp := range fpRes.FavoriteParties {

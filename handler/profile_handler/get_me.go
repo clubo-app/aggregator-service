@@ -29,21 +29,22 @@ func (h profileGatewayHandler) GetMe(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Account not found")
 	}
 
-	friendCountRes, _ := h.rc.GetFriendCount(c.Context(), &rg.GetFriendCountRequest{UserId: p.Id})
-
 	res := datastruct.AggregatedAccount{
 		Id: p.Id,
 		Profile: datastruct.AggregatedProfile{
-			Id:          p.Id,
-			Username:    p.Username,
-			Firstname:   p.Firstname,
-			Lastname:    p.Lastname,
-			Avatar:      p.Avatar,
-			FriendCount: friendCountRes.FriendCount,
+			Id:        p.Id,
+			Username:  p.Username,
+			Firstname: p.Firstname,
+			Lastname:  p.Lastname,
+			Avatar:    p.Avatar,
 		},
 		Email: a.Email,
-		Type:  a.Type.String(),
-		Role:  a.Role.String(),
+		Type:  a.Type,
+	}
+
+	friendCountRes, _ := h.rc.GetFriendCount(c.Context(), &rg.GetFriendCountRequest{UserId: p.Id})
+	if friendCountRes != nil {
+		res.Profile.FriendCount = friendCountRes.FriendCount
 	}
 
 	return c.Status(fiber.StatusOK).JSON(res)

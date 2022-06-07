@@ -7,8 +7,8 @@ import (
 )
 
 type commentGatewayHandler struct {
-	cc   cg.CommentServiceClient
-	prof profile.ProfileServiceClient
+	cc  cg.CommentServiceClient
+	prf profile.ProfileServiceClient
 }
 
 type CommentGatewayHandler interface {
@@ -20,9 +20,9 @@ type CommentGatewayHandler interface {
 	GetReplyByComment(c *fiber.Ctx) error
 }
 
-func NewCommentGatewayHandler(cc cg.CommentServiceClient, prof profile.ProfileServiceClient) CommentGatewayHandler {
+func NewCommentGatewayHandler(cc cg.CommentServiceClient, prf profile.ProfileServiceClient) CommentGatewayHandler {
 	return &commentGatewayHandler{
-		cc:   cc,
-		prof: prof,
+		cc:  cc,
+		prf: prf,
 	}
 }

@@ -8,9 +8,9 @@ import (
 )
 
 type relationGatewayHandler struct {
-	rc   rg.RelationServiceClient
-	pc   pg.PartyServiceClient
-	prof profile.ProfileServiceClient
+	rc  rg.RelationServiceClient
+	pc  pg.PartyServiceClient
+	prf profile.ProfileServiceClient
 }
 
 type RelationGatewayHandler interface {
@@ -25,10 +25,10 @@ type RelationGatewayHandler interface {
 	GetFavorisingUsersByParty(c *fiber.Ctx) error
 }
 
-func NewRelationGatewayHandler(rc rg.RelationServiceClient, pc pg.PartyServiceClient, prof profile.ProfileServiceClient) RelationGatewayHandler {
+func NewRelationGatewayHandler(rc rg.RelationServiceClient, pc pg.PartyServiceClient, prf profile.ProfileServiceClient) RelationGatewayHandler {
 	return &relationGatewayHandler{
-		rc:   rc,
-		pc:   pc,
-		prof: prof,
+		rc:  rc,
+		pc:  pc,
+		prf: prf,
 	}
 }

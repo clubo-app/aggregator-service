@@ -1,6 +1,7 @@
 package authhandler
 
 import (
+	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	ag "github.com/clubo-app/protobuf/auth"
 	"github.com/clubo-app/protobuf/profile"
@@ -29,7 +30,7 @@ func (h authGatewayHandler) Register(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.ErrBadRequest.Code, "Username already taken")
 	}
 
-	u, err := h.ac.RegisterUser(c.Context(), &ag.RegisterUserRequest{
+	a, err := h.ac.RegisterUser(c.Context(), &ag.RegisterUserRequest{
 		Email:    req.Email,
 		Password: req.Password,
 	})
@@ -38,7 +39,7 @@ func (h authGatewayHandler) Register(c *fiber.Ctx) error {
 	}
 
 	p, err := h.pc.CreateProfile(c.Context(), &profile.CreateProfileRequest{
-		Id:        u.Account.Id,
+		Id:        a.Account.Id,
 		Username:  req.Username,
 		Firstname: req.Firstname,
 		Lastname:  req.Lastname,
@@ -48,5 +49,21 @@ func (h authGatewayHandler) Register(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(p)
+	res := datastruct.LoginResponse{
+		Account: datastruct.AggregatedAccount{
+			Id: a.Account.Id,
+			Profile: datastruct.AggregatedProfile{
+				Id:        p.Id,
+				Username:  p.Username,
+				Firstname: p.Firstname,
+				Lastname:  p.Lastname,
+				Avatar:    p.Avatar,
+			},
+			Email: a.Account.Email,
+			Type:  a.Account.Type,
+		},
+		Token: a.Token,
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(res)
 }

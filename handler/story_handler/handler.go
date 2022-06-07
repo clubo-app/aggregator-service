@@ -7,8 +7,8 @@ import (
 )
 
 type storyGatewayHandler struct {
-	sc   sc.StoryServiceClient
-	prof profile.ProfileServiceClient
+	sc  sc.StoryServiceClient
+	prf profile.ProfileServiceClient
 }
 
 type StoryGatewayHandler interface {
@@ -20,9 +20,9 @@ type StoryGatewayHandler interface {
 	PresignURL(c *fiber.Ctx) error
 }
 
-func NewStoryGatewayHandler(sc sc.StoryServiceClient, prof profile.ProfileServiceClient) StoryGatewayHandler {
+func NewStoryGatewayHandler(sc sc.StoryServiceClient, prf profile.ProfileServiceClient) StoryGatewayHandler {
 	return &storyGatewayHandler{
-		sc:   sc,
-		prof: prof,
+		sc:  sc,
+		prf: prf,
 	}
 }
