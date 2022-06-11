@@ -20,19 +20,18 @@ func (h partyGatewayHandler) GetPartyByUser(c *fiber.Ctx) error {
 	offsetStr := c.Query("offset")
 	offset, _ := strconv.ParseInt(offsetStr, 10, 32)
 
-	partyRes, err := h.pc.GetByUser(c.Context(), &party.GetByUserRequest{UserId: uId, Offset: int32(offset), Limit: int32(limit)})
+	parties, err := h.pc.GetByUser(c.Context(), &party.GetByUserRequest{UserId: uId, Offset: int32(offset), Limit: int32(limit)})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
 
-	// get the profile of the party creator
-	profilesRes, _ := h.prf.GetProfile(c.Context(), &profile.GetProfileRequest{Id: uId})
+	profile, _ := h.prf.GetProfile(c.Context(), &profile.GetProfileRequest{Id: uId})
 
-	aggP := make([]datastruct.AggregatedParty, len(partyRes.Parties))
-	for i, p := range partyRes.Parties {
+	aggP := make([]datastruct.AggregatedParty, len(parties.Parties))
+	for i, p := range parties.Parties {
 		aggP[i] = datastruct.AggregatedParty{
 			Id:            p.Id,
-			Creator:       profilesRes,
+			Creator:       profile,
 			Title:         p.Title,
 			IsPublic:      p.IsPublic,
 			Lat:           p.Lat,

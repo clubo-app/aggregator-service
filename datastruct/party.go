@@ -20,6 +20,7 @@ type AggregatedParty struct {
 	Stories       []*sg.Story      `json:"stories"`
 	StartDate     string           `json:"start_date,omitempty"`
 	CreatedAt     string           `json:"created_at,omitempty"`
+	FavoriteCount uint32           `json:"favorite_count"`
 }
 
 type PagedAggregatedParty struct {

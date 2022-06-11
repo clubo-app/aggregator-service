@@ -1,16 +1,12 @@
 package relationhandler
 
 import (
-	pg "github.com/clubo-app/protobuf/party"
-	"github.com/clubo-app/protobuf/profile"
 	rg "github.com/clubo-app/protobuf/relation"
 	"github.com/gofiber/fiber/v2"
 )
 
 type relationGatewayHandler struct {
-	rc  rg.RelationServiceClient
-	pc  pg.PartyServiceClient
-	prf profile.ProfileServiceClient
+	rc rg.RelationServiceClient
 }
 
 type RelationGatewayHandler interface {
@@ -21,14 +17,10 @@ type RelationGatewayHandler interface {
 
 	FavorParty(c *fiber.Ctx) error
 	DefavorParty(c *fiber.Ctx) error
-	GetFavoritePartiesByUser(c *fiber.Ctx) error
-	GetFavorisingUsersByParty(c *fiber.Ctx) error
 }
 
-func NewRelationGatewayHandler(rc rg.RelationServiceClient, pc pg.PartyServiceClient, prf profile.ProfileServiceClient) RelationGatewayHandler {
+func NewRelationGatewayHandler(rc rg.RelationServiceClient) RelationGatewayHandler {
 	return &relationGatewayHandler{
-		rc:  rc,
-		pc:  pc,
-		prf: prf,
+		rc: rc,
 	}
 }

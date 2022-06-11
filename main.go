@@ -56,9 +56,9 @@ func main() {
 
 	authHandler := authhandler.NewAuthGatewayHandler(ac, prf)
 	profileHandler := profilehandler.NewUserGatewayHandler(prf, rc, ac)
-	partyHandler := partyhandler.NewPartyGatewayHandler(pc, prf, sc)
+	partyHandler := partyhandler.NewPartyGatewayHandler(pc, prf, sc, rc)
 	storyHandler := storyhandler.NewStoryGatewayHandler(sc, prf)
-	relationHandler := relationhandler.NewRelationGatewayHandler(rc, pc, prf)
+	relationHandler := relationhandler.NewRelationGatewayHandler(rc)
 	commentHandler := commenthandler.NewCommentGatewayHandler(cc, prf)
 
 	app := fiber.New(fiber.Config{
@@ -95,10 +95,10 @@ func main() {
 	party.Get("/:id", partyHandler.GetParty)
 	party.Get("/user/:id", partyHandler.GetPartyByUser)
 	party.Patch("/:id", middleware.AuthRequired(c.TOKEN_SECRET), partyHandler.UpdateParty)
+	party.Get("/:id/favorite/user", partyHandler.GetFavorisingUsersByParty)
 
 	party.Put("/favorite/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.FavorParty)
-	party.Get("/favorite/user/:id", relationHandler.GetFavoritePartiesByUser)
-	party.Get("/:id/favorite/user", relationHandler.GetFavorisingUsersByParty)
+	party.Get("/favorite/user/:id", partyHandler.GetFavoritePartiesByUser)
 
 	story := app.Group("/story")
 	story.Post("/", middleware.AuthRequired(c.TOKEN_SECRET), storyHandler.CreateStory)

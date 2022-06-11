@@ -1,4 +1,4 @@
-package relationhandler
+package partyhandler
 
 import (
 	"strconv"
@@ -12,7 +12,7 @@ import (
 	"github.com/clubo-app/packages/utils"
 )
 
-func (h relationGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
+func (h partyGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 	pId := c.Params("id")
 	nextPage := c.Query("nextPage")
 
