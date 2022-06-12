@@ -58,7 +58,7 @@ func main() {
 	profileHandler := profilehandler.NewUserGatewayHandler(prf, rc, ac)
 	partyHandler := partyhandler.NewPartyGatewayHandler(pc, prf, sc, rc)
 	storyHandler := storyhandler.NewStoryGatewayHandler(sc, prf)
-	relationHandler := relationhandler.NewRelationGatewayHandler(rc)
+	relationHandler := relationhandler.NewRelationGatewayHandler(rc, prf)
 	commentHandler := commenthandler.NewCommentGatewayHandler(cc, prf)
 
 	app := fiber.New(fiber.Config{
@@ -109,6 +109,7 @@ func main() {
 	story.Get("/presign/:key", storyHandler.PresignURL)
 
 	friend := app.Group("/friend")
+	friend.Get("/:id", relationHandler.GetFriends)
 	friend.Put("/request/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.CreateFriendRequest)
 	friend.Put("/accept/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.AcceptFriendRequest)
 	friend.Delete("/request/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.DeclineFriendRequest)

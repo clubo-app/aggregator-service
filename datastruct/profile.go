@@ -16,3 +16,8 @@ type AggregatedProfile struct {
 	FriendCount      uint32           `json:"friend_count"`
 	FriendshipStatus FriendshipStatus `json:"friendship_status,omitempty"`
 }
+
+type PagedAggregatedProfile struct {
+	AggregatedProfile []AggregatedProfile `json:"profiles"`
+	NextPage          string              `json:"nextPage"`
+}
