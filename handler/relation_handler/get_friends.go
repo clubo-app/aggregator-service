@@ -30,7 +30,7 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 		}
 	} else {
 		var err error
-		fr, err = h.rc.GetFriendsOfUser(c.Context(), &rg.GetFriendsOfUserRequest{UserId: uId, NextPage: nextPage, Limit: limit})
+		fr, err = h.rc.GetFriends(c.Context(), &rg.GetFriendsRequest{UserId: uId, NextPage: nextPage, Limit: limit})
 		if err != nil {
 			return utils.ToHTTPError(err)
 		}
