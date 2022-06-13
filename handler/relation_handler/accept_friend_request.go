@@ -13,7 +13,7 @@ func (h relationGatewayHandler) AcceptFriendRequest(c *fiber.Ctx) error {
 	fId := c.Params("id")
 
 	if user.Sub == fId {
-		return fiber.NewError(fiber.StatusBadRequest, "User id and Friend id are the same")
+		return fiber.NewError(fiber.StatusBadRequest, "You can't accept Requests from yourself")
 	}
 
 	ok, err := h.rc.AcceptFriendRequest(c.Context(), &relation.AcceptFriendRequestRequest{UserId: user.Sub, FriendId: fId})

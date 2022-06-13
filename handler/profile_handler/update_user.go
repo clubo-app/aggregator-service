@@ -27,8 +27,8 @@ func (h profileGatewayHandler) UpdateUser(c *fiber.Ctx) error {
 
 	user := middleware.ParseUser(c)
 
-	var a *ag.Account
-	var p *pg.Profile
+	a := new(ag.Account)
+	p := new(pg.Profile)
 
 	if req.Email != "" || req.Password != "" {
 		res, err := h.ac.UpdateAccount(c.Context(), &ag.UpdateAccountRequest{

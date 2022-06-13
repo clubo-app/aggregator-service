@@ -23,9 +23,9 @@ func (h *partyGatewayHandler) GetFavoritePartiesByUser(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	var partyIds []string
-	for _, fp := range favParties.FavoriteParties {
-		partyIds = append(partyIds, fp.PartyId)
+	partyIds := make([]string, len(favParties.FavoriteParties))
+	for i, fp := range favParties.FavoriteParties {
+		partyIds[i] = fp.PartyId
 	}
 
 	parties, _ := h.pc.GetManyPartiesMap(c.Context(), &party.GetManyPartiesRequest{Ids: partyIds})

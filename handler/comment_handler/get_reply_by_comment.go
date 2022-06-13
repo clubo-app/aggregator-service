@@ -22,9 +22,9 @@ func (h commentGatewayHandler) GetReplyByComment(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	var replyAuthors []string
-	for _, r := range rs.Replies {
-		replyAuthors = append(replyAuthors, r.AuthorId)
+	replyAuthors := make([]string, len(rs.Replies))
+	for i, r := range rs.Replies {
+		replyAuthors[i] = r.AuthorId
 	}
 
 	ps, _ := h.prf.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(replyAuthors)})

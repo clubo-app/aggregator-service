@@ -21,7 +21,7 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
 
-	var fr *rg.PagedFriendRelations
+	fr := new(rg.PagedFriendRelations)
 	if !accepted && acceptedErr == nil {
 		var err error
 		fr, err = h.rc.GetIncomingFriendRequests(c.Context(), &rg.GetIncomingFriendRequestsRequest{UserId: uId, NextPage: nextPage, Limit: limit})
@@ -36,9 +36,9 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 		}
 	}
 
-	var ids []string
-	for _, fp := range fr.Relations {
-		ids = append(ids, fp.FriendId)
+	ids := make([]string, len(fr.Relations))
+	for i, fp := range fr.Relations {
+		ids[i] = fp.FriendId
 	}
 
 	profiles, err := h.pc.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(ids)})

@@ -26,7 +26,7 @@ func (h profileGatewayHandler) GetProfile(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Profile not found")
 	}
 
-	var relation *rg.FriendRelation
+	relation := new(rg.FriendRelation)
 	// if somebody wants the Profile of somebody else we also return the friendship status between them two
 	if id != user.Sub {
 		relation, _ = h.rc.GetFriendRelation(c.Context(), &rg.GetFriendRelationRequest{UserId: user.Sub, FriendId: id})

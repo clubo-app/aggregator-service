@@ -24,12 +24,12 @@ func (h partyGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	var userIds []string
-	for _, fp := range fpRes.FavoriteParties {
-		userIds = append(userIds, fp.UserId)
+	ids := make([]string, len(fpRes.FavoriteParties))
+	for i, fp := range fpRes.FavoriteParties {
+		ids[i] = fp.UserId
 	}
 
-	pRes, _ := h.prf.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: userIds})
+	pRes, _ := h.prf.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: ids})
 
 	aggFP := make([]datastruct.AggregatedFavorisingUsers, len(fpRes.FavoriteParties))
 	for i, fp := range fpRes.FavoriteParties {

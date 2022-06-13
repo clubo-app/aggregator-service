@@ -22,9 +22,9 @@ func (h commentGatewayHandler) GetCommentByParty(c *fiber.Ctx) error {
 		return utils.ToHTTPError(err)
 	}
 
-	var commentAuthors []string
-	for _, c := range cs.Comments {
-		commentAuthors = append(commentAuthors, c.AuthorId)
+	commentAuthors := make([]string, len(cs.Comments))
+	for i, c := range cs.Comments {
+		commentAuthors[i] = c.AuthorId
 	}
 
 	ps, _ := h.prf.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(commentAuthors)})

@@ -40,11 +40,11 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 
 	// Remove the creator of the story from the returned array and create a filtered list with only the profiles of the tagged people.
 	// Separately store the profile of the creator of the story
-	var profile = new(pg.Profile)
-	var fs []*pg.Profile
+	profile := new(pg.Profile)
+	taggedFriends := make([]*pg.Profile, len(profilesRes.Profiles))
 	for _, p := range profilesRes.Profiles {
 		if p.Id != s.UserId {
-			fs = append(fs, p)
+			taggedFriends = append(taggedFriends, p)
 		} else {
 			profile = p
 		}
@@ -55,7 +55,7 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 		PartyId:       s.PartyId,
 		Creator:       profile,
 		Url:           s.Url,
-		TaggedFriends: fs,
+		TaggedFriends: taggedFriends,
 		CreatedAt:     s.CreatedAt.AsTime().UTC().Format(time.RFC3339),
 	}
 
