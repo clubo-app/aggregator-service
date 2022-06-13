@@ -1,14 +1,13 @@
 package relationhandler
 
 import (
-	"log"
 	"strconv"
 	"time"
 
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/protobuf/profile"
-	"github.com/clubo-app/protobuf/relation"
+	rg "github.com/clubo-app/protobuf/relation"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,17 +15,25 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 	uId := c.Params("id")
 	nextPage := c.Query("nextPage")
 
-	// TODO: handle retrieving only accepted users if specified in query
-	//acceptedStr := c.Query("accepted")
-	//accepted, acceptedErr := strconv.ParseBool(acceptedStr)
+	acceptedStr := c.Query("accepted")
+	accepted, acceptedErr := strconv.ParseBool(acceptedStr)
 
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
 
-	fr, err := h.rc.GetIncomingFriendRequests(c.Context(), &relation.GetIncomingFriendRequestsRequest{UserId: uId, NextPage: nextPage, Limit: limit})
-	log.Println(fr)
-	if err != nil {
-		return utils.ToHTTPError(err)
+	var fr *rg.PagedFriendRelations
+	if !accepted && acceptedErr == nil {
+		var err error
+		fr, err = h.rc.GetIncomingFriendRequests(c.Context(), &rg.GetIncomingFriendRequestsRequest{UserId: uId, NextPage: nextPage, Limit: limit})
+		if err != nil {
+			return utils.ToHTTPError(err)
+		}
+	} else {
+		var err error
+		fr, err = h.rc.GetFriendsOfUser(c.Context(), &rg.GetFriendsOfUserRequest{UserId: uId, NextPage: nextPage, Limit: limit})
+		if err != nil {
+			return utils.ToHTTPError(err)
+		}
 	}
 
 	var ids []string
@@ -35,7 +42,6 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 	}
 
 	profiles, err := h.pc.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(ids)})
-	log.Println(profiles)
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
