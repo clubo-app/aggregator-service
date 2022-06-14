@@ -30,6 +30,13 @@ func (h partyGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 	}
 
 	pRes, _ := h.prf.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: ids})
+	if pRes == nil {
+		res := datastruct.PagedAggregatedFavorisingUsers{
+			FavoriteParties: []datastruct.AggregatedFavorisingUsers{},
+			NextPage:        fpRes.NextPage,
+		}
+		return c.Status(fiber.StatusOK).JSON(res)
+	}
 
 	aggFP := make([]datastruct.AggregatedFavorisingUsers, len(fpRes.FavoriteParties))
 	for i, fp := range fpRes.FavoriteParties {

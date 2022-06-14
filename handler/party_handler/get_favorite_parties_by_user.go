@@ -29,6 +29,13 @@ func (h *partyGatewayHandler) GetFavoritePartiesByUser(c *fiber.Ctx) error {
 	}
 
 	parties, _ := h.pc.GetManyPartiesMap(c.Context(), &party.GetManyPartiesRequest{Ids: partyIds})
+	if parties == nil {
+		res := datastruct.PagedAggregatedFavoriteParty{
+			FavoriteParties: []datastruct.AggregatedFavoriteParty{},
+			NextPage:        favParties.NextPage,
+		}
+		return c.Status(fiber.StatusOK).JSON(res)
+	}
 
 	aggFP := make([]datastruct.AggregatedFavoriteParty, len(favParties.FavoriteParties))
 	for i, fp := range favParties.FavoriteParties {
