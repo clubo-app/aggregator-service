@@ -62,7 +62,7 @@ func (h authGatewayHandler) Register(c *fiber.Ctx) error {
 			Email: a.Account.Email,
 			Type:  a.Account.Type,
 		},
-		Token: a.Token,
+		Tokens: *a.Tokens,
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(res)

@@ -82,6 +82,7 @@ func main() {
 	auth.Post("/login", authHandler.Login)
 	auth.Post("/register", authHandler.Register)
 	auth.Post("/google-login", authHandler.GoogleLogin)
+	auth.Get("/refresh/:rt", authHandler.RefreshAccessToken)
 
 	profile := app.Group("/profile")
 	profile.Patch("/", middleware.AuthRequired(c.TOKEN_SECRET), profileHandler.UpdateUser)
@@ -109,7 +110,7 @@ func main() {
 	story.Get("/presign/:key", storyHandler.PresignURL)
 
 	friend := app.Group("/friend")
-	friend.Get("/:id", relationHandler.GetFriends)
+	friend.Get("/:id", middleware.AuthOptional(c.TOKEN_SECRET), relationHandler.GetFriends)
 	friend.Put("/request/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.CreateFriendRequest)
 	friend.Put("/accept/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.AcceptFriendRequest)
 	friend.Delete("/request/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.DeclineFriendRequest)

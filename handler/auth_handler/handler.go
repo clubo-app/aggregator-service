@@ -16,6 +16,7 @@ type AuthGatewayHandler interface {
 	Register(c *fiber.Ctx) error
 	GoogleLogin(c *fiber.Ctx) error
 	VerifyEmail(c *fiber.Ctx) error
+	RefreshAccessToken(c *fiber.Ctx) error
 }
 
 func NewAuthGatewayHandler(ac ag.AuthServiceClient, pc pg.ProfileServiceClient) AuthGatewayHandler {

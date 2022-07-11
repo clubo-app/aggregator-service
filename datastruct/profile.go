@@ -1,12 +1,5 @@
 package datastruct
 
-type FriendshipStatus struct {
-	IsFriend        bool   `json:"is_friend"`
-	OutgoingRequest bool   `json:"outgoing_request"`
-	RequestedAt     string `json:"requested_at,omitempty"`
-	AcceptedAt      string `json:"accepted_at,omitempty"`
-}
-
 type AggregatedProfile struct {
 	Id               string           `json:"id,omitempty"`
 	Username         string           `json:"username,omitempty"`

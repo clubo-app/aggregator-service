@@ -2,25 +2,26 @@ package relationhandler
 
 import (
 	"strconv"
-	"time"
 
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
+	"github.com/clubo-app/packages/utils/middleware"
 	"github.com/clubo-app/protobuf/profile"
 	rg "github.com/clubo-app/protobuf/relation"
 	"github.com/gofiber/fiber/v2"
 )
 
 func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
+	user := middleware.ParseUser(c)
+
 	uId := c.Params("id")
 	nextPage := c.Query("nextPage")
-
 	acceptedStr := c.Query("accepted")
-	accepted, acceptedErr := strconv.ParseBool(acceptedStr)
-
 	limitStr := c.Query("limit")
+	accepted, acceptedErr := strconv.ParseBool(acceptedStr)
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
 
+	// find the friends or incoming friend requests of the wanted user
 	fr := new(rg.PagedFriendRelations)
 	if !accepted && acceptedErr == nil {
 		var err error
@@ -41,6 +42,7 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 		ids[i] = fp.FriendId
 	}
 
+	// we get the profile of all the user having a relation to the wanted user
 	profiles, err := h.pc.GetManyProfilesMap(c.Context(), &profile.GetManyProfilesRequest{Ids: utils.UniqueStringSlice(ids)})
 	if err != nil {
 		return utils.ToHTTPError(err)
@@ -50,17 +52,8 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 	for i, f := range fr.Relations {
 		p := profiles.Profiles[f.FriendId]
 
-		fs := datastruct.FriendshipStatus{
-			IsFriend:        f.Accepted,
-			OutgoingRequest: !f.Accepted,
-		}
-
-		if !f.RequestedAt.AsTime().IsZero() {
-			fs.RequestedAt = f.RequestedAt.AsTime().UTC().Format(time.RFC3339)
-		}
-		if !f.AcceptedAt.AsTime().IsZero() {
-			fs.AcceptedAt = f.AcceptedAt.AsTime().UTC().Format(time.RFC3339)
-		}
+		// we see if the friends are also freinds of the requester, this way we can display if the user is already friends with the friends
+		fs := datastruct.ParseFriendShipStatus(user.Sub, f)
 
 		aggP[i] = datastruct.AggregatedProfile{
 			Id:               p.Id,

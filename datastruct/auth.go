@@ -12,6 +12,6 @@ type AggregatedAccount struct {
 }
 
 type LoginResponse struct {
-	Token   string
+	Tokens  ag.TokenResponse
 	Account AggregatedAccount
 }

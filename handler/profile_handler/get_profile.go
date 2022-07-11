@@ -1,8 +1,6 @@
 package profilehandler
 
 import (
-	"time"
-
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/packages/utils/middleware"
@@ -47,16 +45,7 @@ func (h profileGatewayHandler) GetProfile(c *fiber.Ctx) error {
 	}
 
 	if relation != nil {
-		fs := datastruct.FriendshipStatus{}
-
-		if relation.Accepted {
-			fs.IsFriend = true
-			fs.AcceptedAt = relation.AcceptedAt.AsTime().UTC().Format(time.RFC3339)
-		} else {
-			fs.OutgoingRequest = true
-			fs.RequestedAt = relation.RequestedAt.AsTime().UTC().Format(time.RFC3339)
-		}
-
+		fs := datastruct.ParseFriendShipStatus(user.Sub, relation)
 		res.FriendshipStatus = fs
 	}
 
