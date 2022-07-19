@@ -99,6 +99,7 @@ func main() {
 	party.Get("/:id/favorite/user", partyHandler.GetFavorisingUsersByParty)
 
 	party.Put("/favorite/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.FavorParty)
+	party.Delete("/favorite/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.DefavorParty)
 	party.Get("/favorite/user/:id", partyHandler.GetFavoritePartiesByUser)
 
 	story := app.Group("/story")

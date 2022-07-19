@@ -41,7 +41,7 @@ func (h *partyGatewayHandler) GetFavoritePartiesByUser(c *fiber.Ctx) error {
 	for i, fp := range favParties.FavoriteParties {
 		aggFP[i] = datastruct.AggregatedFavoriteParty{
 			UserId:      fp.UserId,
-			Party:       parties.Parties[fp.PartyId],
+			Party:       datastruct.PartyToAgg(parties.Parties[fp.PartyId]),
 			FavoritedAt: fp.FavoritedAt.AsTime().UTC().Format(time.RFC3339),
 		}
 	}

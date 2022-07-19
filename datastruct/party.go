@@ -1,6 +1,8 @@
 package datastruct
 
 import (
+	"time"
+
 	pg "github.com/clubo-app/protobuf/party"
 	"github.com/clubo-app/protobuf/profile"
 	sg "github.com/clubo-app/protobuf/story"
@@ -23,14 +25,31 @@ type AggregatedParty struct {
 	FavoriteCount uint32           `json:"favorite_count"`
 }
 
+func PartyToAgg(p *pg.Party) AggregatedParty {
+	return AggregatedParty{
+		Id:            p.Id,
+		Title:         p.Title,
+		IsPublic:      p.IsPublic,
+		Lat:           p.Lat,
+		Long:          p.Long,
+		StreetAddress: p.StreetAddress,
+		Stories:       []*sg.Story{},
+		PostalCode:    p.PostalCode,
+		State:         p.State,
+		Country:       p.Country,
+		StartDate:     p.StartDate.AsTime().UTC().Format(time.RFC3339),
+		CreatedAt:     p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
+	}
+}
+
 type PagedAggregatedParty struct {
 	Parties []AggregatedParty `json:"parties"`
 }
 
 type AggregatedFavoriteParty struct {
-	UserId      string    `json:"user_id"`
-	Party       *pg.Party `json:"party"`
-	FavoritedAt string    `json:"favorited_at"`
+	UserId      string          `json:"user_id"`
+	Party       AggregatedParty `json:"party"`
+	FavoritedAt string          `json:"favorited_at"`
 }
 
 type AggregatedFavorisingUsers struct {

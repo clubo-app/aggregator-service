@@ -22,10 +22,8 @@ func (h relationGatewayHandler) FavorParty(c *fiber.Ctx) error {
 	}
 
 	res := datastruct.AggregatedFavoriteParty{
-		UserId: f.UserId,
-		Party: &party.Party{
-			Id: f.PartyId,
-		},
+		UserId:      f.UserId,
+		Party:       datastruct.PartyToAgg(&party.Party{Id: f.PartyId}),
 		FavoritedAt: f.FavoritedAt.AsTime().UTC().Format(time.RFC3339),
 	}
 
