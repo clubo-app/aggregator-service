@@ -30,16 +30,10 @@ func (h profileGatewayHandler) GetMe(c *fiber.Ctx) error {
 	}
 
 	res := datastruct.AggregatedAccount{
-		Id: p.Id,
-		Profile: datastruct.AggregatedProfile{
-			Id:        p.Id,
-			Username:  p.Username,
-			Firstname: p.Firstname,
-			Lastname:  p.Lastname,
-			Avatar:    p.Avatar,
-		},
-		Email: a.Email,
-		Type:  a.Type,
+		Id:      p.Id,
+		Profile: datastruct.ProfileToAgg(p),
+		Email:   a.Email,
+		Type:    a.Type,
 	}
 
 	friendCountRes, _ := h.rc.GetFriendCount(c.Context(), &rg.GetFriendCountRequest{UserId: p.Id})

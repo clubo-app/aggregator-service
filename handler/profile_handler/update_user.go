@@ -59,17 +59,10 @@ func (h profileGatewayHandler) UpdateUser(c *fiber.Ctx) error {
 	friendCountRes, _ := h.rc.GetFriendCount(c.Context(), &rg.GetFriendCountRequest{UserId: p.Id})
 
 	res := datastruct.AggregatedAccount{
-		Id: p.Id,
-		Profile: datastruct.AggregatedProfile{
-			Id:          p.Id,
-			Username:    p.Username,
-			Firstname:   p.Firstname,
-			Lastname:    p.Lastname,
-			Avatar:      p.Avatar,
-			FriendCount: friendCountRes.FriendCount,
-		},
-		Email: a.Email,
-		Type:  a.Type,
+		Id:      p.Id,
+		Profile: datastruct.ProfileToAgg(p).AddFCount(friendCountRes.FriendCount),
+		Email:   a.Email,
+		Type:    a.Type,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(res)

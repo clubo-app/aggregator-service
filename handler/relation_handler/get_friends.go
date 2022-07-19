@@ -55,14 +55,7 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 		// we see if the friends are also freinds of the requester, this way we can display if the user is already friends with the friends
 		fs := datastruct.ParseFriendShipStatus(user.Sub, f)
 
-		aggP[i] = datastruct.AggregatedProfile{
-			Id:               p.Id,
-			Username:         p.Username,
-			Firstname:        p.Lastname,
-			Lastname:         p.Lastname,
-			Avatar:           p.Avatar,
-			FriendshipStatus: fs,
-		}
+		aggP[i] = datastruct.ProfileToAgg(p).AddFs(fs)
 	}
 
 	res := datastruct.PagedAggregatedProfile{

@@ -51,16 +51,10 @@ func (h authGatewayHandler) Register(c *fiber.Ctx) error {
 
 	res := datastruct.LoginResponse{
 		Account: datastruct.AggregatedAccount{
-			Id: a.Account.Id,
-			Profile: datastruct.AggregatedProfile{
-				Id:        p.Id,
-				Username:  p.Username,
-				Firstname: p.Firstname,
-				Lastname:  p.Lastname,
-				Avatar:    p.Avatar,
-			},
-			Email: a.Account.Email,
-			Type:  a.Account.Type,
+			Id:      a.Account.Id,
+			Profile: datastruct.ProfileToAgg(p),
+			Email:   a.Account.Email,
+			Type:    a.Account.Type,
 		},
 		Tokens: *a.Tokens,
 	}

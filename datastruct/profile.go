@@ -1,5 +1,7 @@
 package datastruct
 
+import "github.com/clubo-app/protobuf/profile"
+
 type AggregatedProfile struct {
 	Id               string           `json:"id,omitempty"`
 	Username         string           `json:"username,omitempty"`
@@ -8,6 +10,26 @@ type AggregatedProfile struct {
 	Avatar           string           `json:"avatar,omitempty"`
 	FriendCount      uint32           `json:"friend_count"`
 	FriendshipStatus FriendshipStatus `json:"friendship_status,omitempty"`
+}
+
+func ProfileToAgg(p *profile.Profile) AggregatedProfile {
+	return AggregatedProfile{
+		Id:        p.Id,
+		Username:  p.Username,
+		Firstname: p.Lastname,
+		Lastname:  p.Lastname,
+		Avatar:    p.Avatar,
+	}
+}
+
+func (p AggregatedProfile) AddFs(fs FriendshipStatus) AggregatedProfile {
+	p.FriendshipStatus = fs
+	return p
+}
+
+func (p AggregatedProfile) AddFCount(c uint32) AggregatedProfile {
+	p.FriendCount = c
+	return p
 }
 
 type PagedAggregatedProfile struct {
