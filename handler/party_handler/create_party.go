@@ -8,7 +8,6 @@ import (
 	"github.com/clubo-app/packages/utils/middleware"
 	"github.com/clubo-app/protobuf/party"
 	"github.com/clubo-app/protobuf/profile"
-	sg "github.com/clubo-app/protobuf/story"
 	"github.com/gofiber/fiber/v2"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -53,21 +52,6 @@ func (h partyGatewayHandler) CreateParty(c *fiber.Ctx) error {
 
 	profileRes, _ := h.prf.GetProfile(c.Context(), &profile.GetProfileRequest{Id: p.UserId})
 
-	res := datastruct.AggregatedParty{
-		Id:            p.Id,
-		Creator:       profileRes,
-		Title:         p.Title,
-		IsPublic:      p.IsPublic,
-		Lat:           p.Lat,
-		Long:          p.Long,
-		StreetAddress: p.StreetAddress,
-		Stories:       []*sg.Story{},
-		PostalCode:    p.PostalCode,
-		State:         p.State,
-		Country:       p.Country,
-		StartDate:     p.StartDate.AsTime().UTC().Format(time.RFC3339),
-		CreatedAt:     p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
-	}
-
+	res := datastruct.PartyToAgg(p).AddCreator(profileRes)
 	return c.Status(fiber.StatusCreated).JSON(res)
 }

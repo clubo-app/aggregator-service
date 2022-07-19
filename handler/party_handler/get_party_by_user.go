@@ -2,13 +2,11 @@ package partyhandler
 
 import (
 	"strconv"
-	"time"
 
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/protobuf/party"
 	"github.com/clubo-app/protobuf/profile"
-	sg "github.com/clubo-app/protobuf/story"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -29,22 +27,7 @@ func (h partyGatewayHandler) GetPartyByUser(c *fiber.Ctx) error {
 
 	aggP := make([]datastruct.AggregatedParty, len(parties.Parties))
 	for i, p := range parties.Parties {
-		aggP[i] = datastruct.AggregatedParty{
-			Id:            p.Id,
-			Creator:       profile,
-			Title:         p.Title,
-			IsPublic:      p.IsPublic,
-			Lat:           p.Lat,
-			Long:          p.Long,
-			StreetAddress: p.StreetAddress,
-			PostalCode:    p.PostalCode,
-			State:         p.State,
-			Country:       p.Country,
-			// TODO: we might want to fetch some stories of the party but would have to do this for all party returned of this user
-			Stories:   []*sg.Story{},
-			StartDate: p.StartDate.AsTime().UTC().Format(time.RFC3339),
-			CreatedAt: p.CreatedAt.AsTime().UTC().Format(time.RFC3339),
-		}
+		aggP[i] = datastruct.PartyToAgg(p).AddCreator(profile)
 	}
 
 	res := datastruct.PagedAggregatedParty{

@@ -42,6 +42,21 @@ func PartyToAgg(p *pg.Party) AggregatedParty {
 	}
 }
 
+func (p AggregatedParty) AddCreator(prof *profile.Profile) AggregatedParty {
+	p.Creator = prof
+	return p
+}
+
+func (p AggregatedParty) AddStory(s []*sg.Story) AggregatedParty {
+	p.Stories = s
+	return p
+}
+
+func (p AggregatedParty) AddFCount(c uint32) AggregatedParty {
+	p.FavoriteCount = c
+	return p
+}
+
 type PagedAggregatedParty struct {
 	Parties []AggregatedParty `json:"parties"`
 }
