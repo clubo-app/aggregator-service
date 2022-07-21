@@ -97,6 +97,7 @@ func main() {
 	party.Get("/user/:id", partyHandler.GetPartyByUser)
 	party.Patch("/:id", middleware.AuthRequired(c.TOKEN_SECRET), partyHandler.UpdateParty)
 	party.Get("/:id/favorite/user", partyHandler.GetFavorisingUsersByParty)
+	party.Get("/search/:lat/:long", partyHandler.GeoSearch)
 
 	party.Put("/favorite/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.FavorParty)
 	party.Delete("/favorite/:id", middleware.AuthRequired(c.TOKEN_SECRET), relationHandler.DefavorParty)

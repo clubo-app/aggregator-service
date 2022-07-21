@@ -24,6 +24,7 @@ type PartyGatewayHandler interface {
 
 	GetFavoritePartiesByUser(c *fiber.Ctx) error
 	GetFavorisingUsersByParty(c *fiber.Ctx) error
+	GeoSearch(c *fiber.Ctx) error
 }
 
 func NewPartyGatewayHandler(pc pg.PartyServiceClient, prf prfg.ProfileServiceClient, sc sg.StoryServiceClient, rc rg.RelationServiceClient) PartyGatewayHandler {
