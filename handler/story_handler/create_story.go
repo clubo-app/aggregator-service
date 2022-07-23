@@ -1,8 +1,6 @@
 package storyhandler
 
 import (
-	"time"
-
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
 	"github.com/clubo-app/packages/utils/middleware"
@@ -54,14 +52,10 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 		}
 	}
 
-	res := datastruct.AggregatedStory{
-		Id:            s.Id,
-		PartyId:       s.PartyId,
-		Creator:       profile,
-		Url:           s.Url,
-		TaggedFriends: taggedFriends,
-		CreatedAt:     s.CreatedAt.AsTime().UTC().Format(time.RFC3339),
-	}
+	res := datastruct.
+		StoryToAgg(s).
+		AddCreator(profile).
+		AddFriends(taggedFriends)
 
 	return c.Status(fiber.StatusCreated).JSON(res)
 }

@@ -17,7 +17,6 @@ func ProfileToAgg(p *profile.Profile) AggregatedProfile {
 	if p == nil {
 		return AggregatedProfile{}
 	}
-
 	return AggregatedProfile{
 		Id:        p.Id,
 		Username:  p.Username,

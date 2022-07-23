@@ -57,7 +57,7 @@ func main() {
 	authHandler := authhandler.NewAuthGatewayHandler(ac, prf)
 	profileHandler := profilehandler.NewUserGatewayHandler(prf, rc, ac)
 	partyHandler := partyhandler.NewPartyGatewayHandler(pc, prf, sc, rc)
-	storyHandler := storyhandler.NewStoryGatewayHandler(sc, prf)
+	storyHandler := storyhandler.NewStoryGatewayHandler(sc, prf, pc)
 	relationHandler := relationhandler.NewRelationGatewayHandler(rc, prf)
 	commentHandler := commenthandler.NewCommentGatewayHandler(cc, prf)
 
