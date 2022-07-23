@@ -16,6 +16,9 @@ func (h commentGatewayHandler) GetReplyByComment(c *fiber.Ctx) error {
 
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
+	if limit > 20 {
+		return fiber.NewError(fiber.StatusBadRequest, "Max limit is 20")
+	}
 
 	rs, err := h.cc.GetReplyByComment(c.Context(), &cg.GetReplyByCommentRequest{CommentId: cId, NextPage: nextPage, Limit: limit})
 	if err != nil {

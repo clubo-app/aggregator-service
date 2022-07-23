@@ -16,6 +16,10 @@ func (h storyGatewayHandler) GetStoryByParty(c *fiber.Ctx) error {
 
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
+	if limit > 20 {
+		return fiber.NewError(fiber.StatusBadRequest, "Max limit is 20")
+	}
+
 	nextPage := c.Query("nextPage")
 
 	stories, err := h.sc.GetByParty(c.Context(), &sg.GetByPartyRequest{

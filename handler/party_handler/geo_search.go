@@ -12,6 +12,10 @@ import (
 func (h partyGatewayHandler) GeoSearch(c *fiber.Ctx) error {
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseInt(limitStr, 10, 32)
+	if limit > 20 {
+		return fiber.NewError(fiber.StatusBadRequest, "Max limit is 20")
+	}
+
 	offsetStr := c.Query("offset")
 	offset, _ := strconv.ParseInt(offsetStr, 10, 32)
 

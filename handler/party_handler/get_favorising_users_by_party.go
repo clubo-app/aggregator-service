@@ -18,6 +18,9 @@ func (h partyGatewayHandler) GetFavorisingUsersByParty(c *fiber.Ctx) error {
 
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
+	if limit > 20 {
+		return fiber.NewError(fiber.StatusBadRequest, "Max limit is 20")
+	}
 
 	fpRes, err := h.rc.GetFavorisingUsersByParty(c.Context(), &rg.GetFavorisingUsersByPartyRequest{PartyId: pId, NextPage: nextPage, Limit: limit})
 	if err != nil {

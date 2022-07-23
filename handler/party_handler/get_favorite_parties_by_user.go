@@ -17,6 +17,9 @@ func (h *partyGatewayHandler) GetFavoritePartiesByUser(c *fiber.Ctx) error {
 
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
+	if limit > 20 {
+		return fiber.NewError(fiber.StatusBadRequest, "Max limit is 20")
+	}
 
 	favParties, err := h.rc.GetFavoritePartiesByUser(c.Context(), &rg.GetFavoritePartiesByUserRequest{UserId: uId, NextPage: nextPage, Limit: limit})
 	if err != nil {

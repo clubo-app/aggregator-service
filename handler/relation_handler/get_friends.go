@@ -16,10 +16,15 @@ func (h relationGatewayHandler) GetFriends(c *fiber.Ctx) error {
 
 	uId := c.Params("id")
 	nextPage := c.Query("nextPage")
+
 	acceptedStr := c.Query("accepted")
-	limitStr := c.Query("limit")
 	accepted, acceptedErr := strconv.ParseBool(acceptedStr)
+
+	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
+	if limit > 40 {
+		return fiber.NewError(fiber.StatusBadRequest, "Max limit is 40")
+	}
 
 	// find the friends or incoming friend requests of the wanted user
 	fr := new(rg.PagedFriendRelations)
