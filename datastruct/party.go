@@ -9,20 +9,20 @@ import (
 )
 
 type AggregatedParty struct {
-	Id            string           `json:"id,omitempty"`
-	Creator       *profile.Profile `json:"creator,omitempty"`
-	Title         string           `json:"title,omitempty"`
-	IsPublic      bool             `json:"is_public,omitempty"`
-	Lat           float32          `json:"lat,omitempty"`
-	Long          float32          `json:"long,omitempty"`
-	StreetAddress string           `json:"street_address,omitempty"`
-	PostalCode    string           `json:"postal_code,omitempty"`
-	State         string           `json:"state,omitempty"`
-	Country       string           `json:"country,omitempty"`
-	Stories       []*sg.Story      `json:"stories"`
-	StartDate     string           `json:"start_date,omitempty"`
-	CreatedAt     string           `json:"created_at,omitempty"`
-	FavoriteCount uint32           `json:"favorite_count"`
+	Id            string            `json:"id,omitempty"`
+	Creator       AggregatedProfile `json:"creator,omitempty"`
+	Title         string            `json:"title,omitempty"`
+	IsPublic      bool              `json:"is_public,omitempty"`
+	Lat           float32           `json:"lat,omitempty"`
+	Long          float32           `json:"long,omitempty"`
+	StreetAddress string            `json:"street_address,omitempty"`
+	PostalCode    string            `json:"postal_code,omitempty"`
+	State         string            `json:"state,omitempty"`
+	Country       string            `json:"country,omitempty"`
+	Stories       []*sg.Story       `json:"stories"`
+	StartDate     string            `json:"start_date,omitempty"`
+	CreatedAt     string            `json:"created_at,omitempty"`
+	FavoriteCount uint32            `json:"favorite_count"`
 }
 
 func PartyToAgg(p *pg.Party) AggregatedParty {
@@ -42,7 +42,7 @@ func PartyToAgg(p *pg.Party) AggregatedParty {
 	}
 }
 
-func (p AggregatedParty) AddCreator(prof *profile.Profile) AggregatedParty {
+func (p AggregatedParty) AddCreator(prof AggregatedProfile) AggregatedParty {
 	p.Creator = prof
 	return p
 }

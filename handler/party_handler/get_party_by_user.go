@@ -27,7 +27,7 @@ func (h partyGatewayHandler) GetPartyByUser(c *fiber.Ctx) error {
 
 	aggP := make([]datastruct.AggregatedParty, len(parties.Parties))
 	for i, p := range parties.Parties {
-		aggP[i] = datastruct.PartyToAgg(p).AddCreator(profile)
+		aggP[i] = datastruct.PartyToAgg(p).AddCreator(datastruct.ProfileToAgg(profile))
 	}
 
 	res := datastruct.PagedAggregatedParty{

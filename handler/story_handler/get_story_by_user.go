@@ -13,10 +13,13 @@ func (h storyGatewayHandler) GetStoryByUser(c *fiber.Ctx) error {
 
 	limitStr := c.Query("limit")
 	limit, _ := strconv.ParseUint(limitStr, 10, 32)
-	offsetStr := c.Query("offset")
-	offset, _ := strconv.ParseInt(offsetStr, 10, 32)
+	nextPage := c.Query("nextPage")
 
-	res, err := h.sc.GetByUser(c.Context(), &story.GetByUserRequest{UserId: userId, Offset: int32(offset), Limit: int32(limit)})
+	res, err := h.sc.GetByUser(c.Context(), &story.GetByUserRequest{
+		UserId:   userId,
+		NextPage: nextPage,
+		Limit:    uint32(limit),
+	})
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}

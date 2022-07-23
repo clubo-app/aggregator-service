@@ -106,7 +106,6 @@ func main() {
 	story := app.Group("/story")
 	story.Post("/", middleware.AuthRequired(c.TOKEN_SECRET), storyHandler.CreateStory)
 	story.Delete("/:id", storyHandler.DeleteStory)
-	story.Get("/:id", storyHandler.GetStory)
 	story.Get("/party/:id", storyHandler.GetStoryByParty)
 	story.Get("/user/:id", storyHandler.GetStoryByUser)
 	story.Get("/presign/:key", storyHandler.PresignURL)

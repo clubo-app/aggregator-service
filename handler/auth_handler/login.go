@@ -31,7 +31,6 @@ func (h authGatewayHandler) Login(c *fiber.Ctx) error {
 			Id:      a.Account.Id,
 			Profile: datastruct.ProfileToAgg(p),
 			Email:   a.Account.Email,
-			Type:    a.Account.Type,
 		},
 		Tokens: *a.Tokens,
 	}

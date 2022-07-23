@@ -62,7 +62,6 @@ func (h profileGatewayHandler) UpdateUser(c *fiber.Ctx) error {
 		Id:      p.Id,
 		Profile: datastruct.ProfileToAgg(p).AddFCount(friendCountRes.FriendCount),
 		Email:   a.Email,
-		Type:    a.Type,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(res)

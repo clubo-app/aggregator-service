@@ -5,6 +5,7 @@ import (
 
 	"github.com/clubo-app/aggregator-service/datastruct"
 	"github.com/clubo-app/packages/utils"
+	"github.com/clubo-app/packages/utils/middleware"
 	pg "github.com/clubo-app/protobuf/profile"
 	sg "github.com/clubo-app/protobuf/story"
 	"github.com/gofiber/fiber/v2"
@@ -22,7 +23,10 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 		return err
 	}
 
+	user := middleware.ParseUser(c)
+
 	s, err := h.sc.CreateStory(c.Context(), &sg.CreateStoryRequest{
+		RequesterId:   user.Sub,
 		PartyId:       req.PartyId,
 		Url:           req.Url,
 		TaggedFriends: req.TaggedFriends,
@@ -40,13 +44,13 @@ func (h storyGatewayHandler) CreateStory(c *fiber.Ctx) error {
 
 	// Remove the creator of the story from the returned array and create a filtered list with only the profiles of the tagged people.
 	// Separately store the profile of the creator of the story
-	profile := new(pg.Profile)
-	taggedFriends := make([]*pg.Profile, len(profilesRes.Profiles))
-	for _, p := range profilesRes.Profiles {
+	var profile datastruct.AggregatedProfile
+	taggedFriends := make([]datastruct.AggregatedProfile, len(profilesRes.Profiles))
+	for i, p := range profilesRes.Profiles {
 		if p.Id != s.UserId {
-			taggedFriends = append(taggedFriends, p)
+			taggedFriends[i] = datastruct.ProfileToAgg(p)
 		} else {
-			profile = p
+			profile = datastruct.ProfileToAgg(p)
 		}
 	}
 

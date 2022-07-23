@@ -29,7 +29,7 @@ func (h partyGatewayHandler) UpdateParty(c *fiber.Ctx) error {
 	if err != nil {
 		return utils.ToHTTPError(err)
 	}
-	res := datastruct.PartyToAgg(p).AddCreator(profileRes)
+	res := datastruct.PartyToAgg(p).AddCreator(datastruct.ProfileToAgg(profileRes))
 
 	storyRes, err := h.sc.GetByParty(c.Context(), &sg.GetByPartyRequest{PartyId: p.Id})
 	if err != nil {

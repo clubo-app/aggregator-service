@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/clubo-app/packages v0.0.0-20220529184338-03bf6fbe85dc
-	github.com/clubo-app/protobuf v0.0.0-20220721191618-cebd25de57fa
+	github.com/clubo-app/protobuf v0.0.0-20220723190930-c027594acf4e
 	github.com/gofiber/fiber/v2 v2.34.0
 	github.com/spf13/viper v1.12.0
 	google.golang.org/protobuf v1.28.0

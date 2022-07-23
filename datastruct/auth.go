@@ -8,7 +8,6 @@ type AggregatedAccount struct {
 	Id      string            `json:"id"`
 	Profile AggregatedProfile `json:"profile"`
 	Email   string            `json:"email"`
-	Type    ag.Type           `json:"type,omitempty"`
 }
 
 type LoginResponse struct {

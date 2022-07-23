@@ -13,7 +13,6 @@ type storyGatewayHandler struct {
 
 type StoryGatewayHandler interface {
 	CreateStory(c *fiber.Ctx) error
-	GetStory(c *fiber.Ctx) error
 	GetStoryByParty(c *fiber.Ctx) error
 	GetStoryByUser(c *fiber.Ctx) error
 	DeleteStory(c *fiber.Ctx) error

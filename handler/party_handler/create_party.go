@@ -52,6 +52,6 @@ func (h partyGatewayHandler) CreateParty(c *fiber.Ctx) error {
 
 	profileRes, _ := h.prf.GetProfile(c.Context(), &profile.GetProfileRequest{Id: p.UserId})
 
-	res := datastruct.PartyToAgg(p).AddCreator(profileRes)
+	res := datastruct.PartyToAgg(p).AddCreator(datastruct.ProfileToAgg(profileRes))
 	return c.Status(fiber.StatusCreated).JSON(res)
 }

@@ -23,7 +23,7 @@ func (h partyGatewayHandler) GetParty(c *fiber.Ctx) error {
 	stories, _ := h.sc.GetByParty(c.Context(), &sg.GetByPartyRequest{PartyId: p.Id})
 	favoriteCount, _ := h.rc.GetFavoritePartyCount(c.Context(), &relation.GetFavoritePartyCountRequest{PartyId: p.Id})
 
-	res := datastruct.PartyToAgg(p).AddCreator(profile)
+	res := datastruct.PartyToAgg(p).AddCreator(datastruct.ProfileToAgg(profile))
 	if stories != nil {
 		res.AddStory(stories.Stories)
 	}

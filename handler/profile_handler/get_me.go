@@ -33,7 +33,6 @@ func (h profileGatewayHandler) GetMe(c *fiber.Ctx) error {
 		Id:      p.Id,
 		Profile: datastruct.ProfileToAgg(p),
 		Email:   a.Email,
-		Type:    a.Type,
 	}
 
 	friendCountRes, _ := h.rc.GetFriendCount(c.Context(), &rg.GetFriendCountRequest{UserId: p.Id})
